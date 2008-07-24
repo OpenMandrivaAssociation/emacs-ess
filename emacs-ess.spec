@@ -4,7 +4,7 @@
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{rname}
 Version:	5.3.6
-Release:	%mkrel 1
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		Editors
 URL:		http://ess.r-project.org
