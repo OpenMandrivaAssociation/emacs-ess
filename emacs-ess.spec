@@ -1,21 +1,21 @@
-%define	rname		ess
-%define xemacs_name	xemacs-%{rname}
+%define	rname ess
+%define xemacs_name xemacs-%{rname}
 
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{rname}
-Version:	5.3.6
-Release:	%mkrel 3
+Version:	5.3.8
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Editors
 URL:		http://ess.r-project.org
-Source:		http://ess.r-project.org/downloads/ess/%{rname}-%{version}.tgz
+Source0:	http://ess.r-project.org/downloads/ess/%{rname}-%{version}.tgz
 Requires:	emacs
 BuildRequires:	emacs-X11
 BuildRequires:	emacs-el
 BuildRequires:	texinfo
 BuildRequires:	R-base
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-buildroot
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 This package provides Emacs Speaks Statistics (ESS), which provides
@@ -55,7 +55,10 @@ statistical analysis languages.
 Summary:	Emacs Speaks Statistics package for XEmacs
 Group:		Editors
 Requires:	xemacs
-BuildRequires:	xemacs xemacs-el texinfo R-base
+BuildRequires:	xemacs
+BuildRequires:	xemacs-el
+BuildRequires:	texinfo
+BuildRequires:	R-base
 
 %description -n %{xemacs_name}
 This package provides Emacs Speaks Statistics (ESS) for XEmacs, which provides
@@ -75,9 +78,9 @@ statistical analysis languages.
 
 %prep
 %setup -q -n %{rname}-%{version}
-%__chmod u+w doc/{html,info,refcard,dir.txt} # fix perms
+chmod u+w doc/{html,info,refcard,dir.txt} # fix perms
 %if %{mdkversion} >= 200800
-%__cp -Rp lisp lisp-xemacs
+cp -Rp lisp lisp-xemacs
 %endif
 
 %build
@@ -129,23 +132,23 @@ cat > %{name}.el <<"EOF"
 %endif
 
 %install
-%__rm -rf %{buildroot}
+rm -rf %{buildroot}
 
-%__install -d %{buildroot}%_sysconfdir/emacs/site-start.d
-%__install -d %{buildroot}%{_infodir}
-%__install -d %{buildroot}%{_datadir}/emacs/site-lisp/%{name}
+install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
+install -d %{buildroot}%{_infodir}
+install -d %{buildroot}%{_datadir}/emacs/site-lisp/%{name}
 
 %makeinstall_std \
 	PREFIX=%{buildroot}%{_prefix} \
 	LISPDIR=%{buildroot}%{_datadir}/emacs/site-lisp/%{rname} \
 	ETCDIR=%{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc \
 	INFODIR=%{buildroot}%{_infodir}
-%__install -m 0644 %{name}.el %buildroot%_sysconfdir/emacs/site-start.d/
-%__rm -f %{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc/*.BAT
-%__rm -f %{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc/*.sparc
+install -m 0644 %{name}.el %{buildroot}%{_sysconfdir}/emacs/site-start.d/
+rm -f %{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc/*.BAT
+rm -f %{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc/*.sparc
 
 %if %{mdkversion} >= 200800
-%__install -d %{buildroot}%{_datadir}/xemacs/site-lisp/%{name}
+install -d %{buildroot}%{_datadir}/xemacs/site-lisp/%{name}
 for D in lisp-xemacs etc
 do
 	pushd $D
@@ -157,9 +160,9 @@ do
 		INFODIR=%{buildroot}%{_infodir}
 	popd
 done
-%__install -m 0644 %{xemacs_name}.el %buildroot%_sysconfdir/emacs/site-start.d/
-%__rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.BAT
-%__rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.sparc
+install -m 0644 %{xemacs_name}.el %{buildroot}%{_sysconfdir}/emacs/site-start.d/
+rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.BAT
+rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.sparc
 %endif
 
 %post
@@ -177,14 +180,14 @@ done
 %endif
 
 %clean
-%__rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %doc ANNOUNCE ChangeLog README VERSION
-%dir %_datadir/emacs/site-lisp
-%_datadir/emacs/site-lisp/%{rname}
-%_infodir/*
-%config(noreplace) %_sysconfdir/emacs/site-start.d/%{name}.el
+%dir %{_datadir}/emacs/site-lisp
+%{_datadir}/emacs/site-lisp/%{rname}
+%{_infodir}/*
+%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
 
 %files doc
 %defattr(-,root,root)
@@ -193,9 +196,9 @@ done
 %if %{mdkversion} >= 200800
 %files -n %{xemacs_name}
 %doc ANNOUNCE ChangeLog README VERSION
-%dir %_datadir/xemacs/site-lisp
-%dir %_datadir/xemacs/site-lisp/%{rname}
-%_datadir/xemacs/site-lisp/%{rname}
-%_infodir/*
-%config(noreplace) %_sysconfdir/emacs/site-start.d/%{xemacs_name}.el
+%dir %{_datadir}/xemacs/site-lisp
+%dir %{_datadir}/xemacs/site-lisp/%{rname}
+%{_datadir}/xemacs/site-lisp/%{rname}
+%{_infodir}/*
+%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{xemacs_name}.el
 %endif
