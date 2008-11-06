@@ -4,16 +4,17 @@
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{rname}
 Version:	5.3.8
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		Editors
 URL:		http://ess.r-project.org
 Source0:	http://ess.r-project.org/downloads/ess/%{rname}-%{version}.tgz
-Requires:	emacs
 BuildRequires:	emacs-X11
 BuildRequires:	emacs-el
 BuildRequires:	texinfo
 BuildRequires:	R-base
+Requires:	emacs
+Requires:	emacs-el
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
@@ -54,11 +55,12 @@ statistical analysis languages.
 %package -n %{xemacs_name}
 Summary:	Emacs Speaks Statistics package for XEmacs
 Group:		Editors
-Requires:	xemacs
 BuildRequires:	xemacs
 BuildRequires:	xemacs-el
 BuildRequires:	texinfo
 BuildRequires:	R-base
+Requires:	xemacs
+Requires:	xemacs-el
 
 %description -n %{xemacs_name}
 This package provides Emacs Speaks Statistics (ESS) for XEmacs, which provides
