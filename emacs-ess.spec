@@ -3,8 +3,8 @@
 
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{rname}
-Version:	5.3.8
-Release:	%mkrel 2
+Version:	5.3.11
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Editors
 URL:		http://ess.r-project.org
@@ -144,10 +144,13 @@ install -d %{buildroot}%{_datadir}/emacs/site-lisp/%{name}
 	PREFIX=%{buildroot}%{_prefix} \
 	LISPDIR=%{buildroot}%{_datadir}/emacs/site-lisp/%{rname} \
 	ETCDIR=%{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc \
-	INFODIR=%{buildroot}%{_infodir}
+	INFODIR=%{buildroot}%{_infodir} \
+	DOCDIR=%{buildroot}%{_docdir}/%{name}-doc
 install -m 0644 %{name}.el %{buildroot}%{_sysconfdir}/emacs/site-start.d/
 rm -f %{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc/*.BAT
 rm -f %{buildroot}%{_datadir}/emacs/site-lisp/%{rname}/etc/*.sparc
+rm -f %{buildroot}%{_docdir}/%{name}-doc/*.dvi
+rm -f %{buildroot}%{_docdir}/%{name}-doc/*.html
 
 %if %{mdkversion} >= 200800
 install -d %{buildroot}%{_datadir}/xemacs/site-lisp/%{name}
@@ -185,6 +188,7 @@ rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.sparc
 rm -rf %{buildroot}
 
 %files
+%defattr(-,root,root)
 %doc ANNOUNCE ChangeLog README VERSION
 %dir %{_datadir}/emacs/site-lisp
 %{_datadir}/emacs/site-lisp/%{rname}
@@ -193,10 +197,11 @@ rm -rf %{buildroot}
 
 %files doc
 %defattr(-,root,root)
-%doc doc/*.pdf doc/refcard/refcard.pdf doc/html
+%doc doc/ess-intro-graphs.pdf doc/readme.pdf doc/html
 
 %if %{mdkversion} >= 200800
 %files -n %{xemacs_name}
+%defattr(-,root,root)
 %doc ANNOUNCE ChangeLog README VERSION
 %dir %{_datadir}/xemacs/site-lisp
 %dir %{_datadir}/xemacs/site-lisp/%{rname}
@@ -204,3 +209,4 @@ rm -rf %{buildroot}
 %{_infodir}/*
 %config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{xemacs_name}.el
 %endif
+
