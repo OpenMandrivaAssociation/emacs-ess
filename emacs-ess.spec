@@ -3,7 +3,7 @@
 
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{rname}
-Version:	5.4
+Version:	5.7.1
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		Editors
