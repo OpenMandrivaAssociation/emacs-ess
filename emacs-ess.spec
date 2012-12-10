@@ -4,7 +4,7 @@
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{rname}
 Version:	5.13
-Release:	%mkrel 1
+Release:	2
 License:	GPLv2+
 Group:		Editors
 URL:		http://ess.r-project.org
@@ -16,7 +16,6 @@ BuildRequires:	R-base
 Requires:	emacs
 Requires:	emacs-el
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 This package provides Emacs Speaks Statistics (ESS), which provides
@@ -92,7 +91,6 @@ cp -Rp lisp lisp-xemacs
 	ETCDIR=%{_datadir}/emacs/site-lisp/%{rname}/etc \
 	INFODIR=%{_infodir}
 
-%if %{mdkversion} >= 200800
 pushd lisp-xemacs
 %make \
 	EMACS=xemacs \
@@ -122,20 +120,7 @@ cat > %{xemacs_name}.el <<"EOF"
 						(require 'ess-site)))
 EOF
 
-%else
-
-cat > %{name}.el <<"EOF"
-;;; Set up %{rname} for Emacs and XEmacs.
-;;;
-;;; This file is automatically loaded by emacs's site-start.el
-;;; when you start a new emacs session.
-(if (string-match "XEmacs" emacs-version) (add-path "/usr/share/emacs/site-lisp/ess"))
-(require 'ess-site)
-%endif
-
 %install
-rm -rf %{buildroot}
-
 install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 install -d %{buildroot}%{_infodir}
 install -d %{buildroot}%{_datadir}/emacs/site-lisp/%{name}
@@ -170,27 +155,9 @@ rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.BAT
 rm -f %{buildroot}%{_datadir}/xemacs/site-lisp/%{rname}/etc/*.sparc
 %endif
 
-%post
-%_install_info %{rname}
-
-%preun
-%_remove_install_info %{rname}
-
-%if %{mdkversion} >= 200800
-%post -n %{xemacs_name}
-%_install_info %{rname}
-
-%preun -n %{xemacs_name}
-%_remove_install_info %{rname}
-%endif
-
-%clean
-rm -rf %{buildroot}
-
 %files
 %defattr(-,root,root)
 %doc ANNOUNCE ChangeLog README VERSION
-%dir %{_datadir}/emacs/site-lisp
 %{_datadir}/emacs/site-lisp/%{rname}
 %{_infodir}/*
 %config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
@@ -199,14 +166,72 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc doc/ess-intro-graphs.pdf doc/readme.pdf doc/html
 
-%if %{mdkversion} >= 200800
 %files -n %{xemacs_name}
 %defattr(-,root,root)
 %doc ANNOUNCE ChangeLog README VERSION
-%dir %{_datadir}/xemacs/site-lisp
-%dir %{_datadir}/xemacs/site-lisp/%{rname}
 %{_datadir}/xemacs/site-lisp/%{rname}
-%{_infodir}/*
 %config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{xemacs_name}.el
-%endif
 
+
+
+%changelog
+* Fri Feb 11 2011 Luc Menut <lmenut@mandriva.org> 5.13-1mdv2011.0
++ Revision: 637342
+- update to 5.13
+
+* Wed Nov 10 2010 Luc Menut <lmenut@mandriva.org> 5.12-1mdv2011.0
++ Revision: 595641
+- update to 5.12
+
+* Tue Jul 20 2010 Luc Menut <lmenut@mandriva.org> 5.11-1mdv2011.0
++ Revision: 556285
+- update to 5.11
+
+* Sat Jul 10 2010 Luc Menut <lmenut@mandriva.org> 5.10-1mdv2011.0
++ Revision: 550511
+- update to 5.10
+
+* Sun Mar 21 2010 Luc Menut <lmenut@mandriva.org> 5.8-1mdv2010.1
++ Revision: 526161
+- update to 5.8
+
+* Tue Jan 05 2010 Luc Menut <lmenut@mandriva.org> 5.7.1-1mdv2010.1
++ Revision: 486509
+- update to version 5.7.1
+
+* Tue Sep 01 2009 Luc Menut <lmenut@mandriva.org> 5.4-1mdv2010.0
++ Revision: 424043
+- update to new version 5.4
+
+* Fri Mar 20 2009 Tomasz Pawel Gajc <tpg@mandriva.org> 5.3.11-1mdv2009.1
++ Revision: 358221
+- update to new version 5.3.11 (mdvbz #48435)
+- fix docs installation (use Luc Menut's spec changes)
+
+* Thu Nov 06 2008 Tomasz Pawel Gajc <tpg@mandriva.org> 5.3.8-2mdv2009.1
++ Revision: 300329
+- add requires on emacs-el and xemacs-el (#44842)
+
+* Thu Aug 07 2008 Tomasz Pawel Gajc <tpg@mandriva.org> 5.3.8-1mdv2009.0
++ Revision: 266245
+- update to new version 5.3.8
+- spec file clean
+
+* Thu Jul 24 2008 Thierry Vignaud <tv@mandriva.org> 5.3.6-3mdv2009.0
++ Revision: 244700
+- rebuild
+
+* Sat Jan 26 2008 Tomasz Pawel Gajc <tpg@mandriva.org> 5.3.6-1mdv2008.1
++ Revision: 158380
+- some minor changes in a spec file
+- import emacs-ess
+
+
+* Fri Jan 18 2008 Luc Menut <Luc.Menut@supagro.inra.fr> 5.3.6-1mdv2008.1
+- Release 5.3.6
+- fix site-start file for XEmacs
+- build emacs-ess and xemacs-ess for mdkversion >= 200800
+
+* Fri Sep 14 2007 Luc Menut <Luc.Menut@supagro.inra.fr> 5.3.5-1mdv2007.1
+- initial Mandriva package
+- based on Tom Moertel's spec file included in the ess source
