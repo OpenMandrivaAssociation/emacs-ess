@@ -3,7 +3,7 @@
 Summary:	Emacs Speaks Statistics package for Emacs
 Name:		emacs-%{upstream_name}
 Version:	13.09
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Editors
 Url:		http://ess.r-project.org
