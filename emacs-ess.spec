@@ -6,7 +6,7 @@ Version:	13.09
 Release:	2
 License:	GPLv2+
 Group:		Editors
-Url:		http://ess.r-project.org
+Url:		https://ess.r-project.org
 Source0:	http://ess.r-project.org/downloads/ess/%{upstream_name}-%{version}.tgz
 BuildRequires:	emacs
 BuildRequires:	emacs-el
